@@ -1,4 +1,4 @@
-Simple Threading-Class for HTML5-complaint Javascript.
+Simple Threading-Class for HTML5/Javascript.
 
 * Attention! The Browser needs to support Blob and URL: http://caniuse.com/bloburls
 * Currently only works on browser-side!

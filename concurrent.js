@@ -16,30 +16,30 @@ window.Thread = function(){
 
     function Thread(threadFunction){
         if (typeof threadFunction !== 'function') throw "[concurrent.js] threadFunction must be a function!";
-        var str = threadFunction.toString();
+        var temp = threadFunction.toString();
         //remove function parent
         var start = -1;
-        for (var i = 0; i < str.length;i++){
-            var char = str.charAt(i);
-            if (char === '{'){
+        for (var i = 0; i < temp.length;i++){
+            var c = temp.charAt(i);
+            if (c === '{'){
                 start = i;
                 break;
             }
         }
         var end = -1;
-        for (var i = str.length; i > 0; i--){
-            var char = str.charAt(i);
-            if (char === '}'){
+        for (var i = temp.length; i > 0; i--){
+            var c = temp.charAt(i);
+            if (c === '}'){
                 end = i;
                 break;
             }
         }
 
-        str = str.substring(start+1, end);
+        temp = temp.substring(start+1, end);
 
         this.onmessages = [];
 
-        var blob = new Blob([str]);
+        var blob = new Blob([temp]);
         var worker = new Worker(URL.createObjectURL(blob));
         var self = this;
         worker.onmessage = function(e){
