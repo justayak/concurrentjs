@@ -13,7 +13,10 @@
     });
 
     thread.onmessage(function(m){
-       console.log(m.data);
+        console.log(m.data);
+
+
+        this.postMessage("lol!");
     });
 
     thread.postMessage("hallo welt!");

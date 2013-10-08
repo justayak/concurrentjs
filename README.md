@@ -14,6 +14,9 @@ var thread = new Thread(function(){
 // receive messages from the thread:
 thread.onmessage(function(m){
    console.log(m.data);
+
+   // this.-context points to the thread-object
+   this.postMessage("lol!");
 });
 
 // send messages to the thread:
