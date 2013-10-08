@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threads</title>
+</head>
+<script src="concurrent.js"></script>
+<script>
+    var thread = new Thread(function(){
+        self.onmessage = function(e){
+            postMessage('worker : ' + e.data);
+        };
+    });
+
+    thread.onmessage(function(m){
+       console.log(m.data);
+    });
+
+    thread.postMessage("hallo welt!");
+
+    //thread.terminate();
+
+
+</script>
+<body>
+
+</body>
+</html>
