@@ -61,14 +61,17 @@ window.Thread = function(){
 
     Thread.prototype.onmessage = function(callback){
         this.onmessages.push(callback);
+        return this;
     };
 
     Thread.prototype.postMessage = function(message){
         this.worker.postMessage(message);
+        return this;
     };
 
     Thread.prototype.terminate = function(){
         Worker.prototype.terminate.call(this.worker);
+        return this;
     };
 
 
