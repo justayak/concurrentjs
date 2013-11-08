@@ -27,7 +27,7 @@ thread.terminate();
 
 ```
 
-You can test, if threading is available by
+You can check if threading is available:
 ```javascript
 if (Thread.available){
     // Threading is available..
