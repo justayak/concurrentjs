@@ -6,6 +6,9 @@
 <!--script src="concurrent.js"></script-->
 <script src="concurrent_minified.js"></script>
 <script>
+
+    console.log(Thread.available);
+
     var thread = new Thread(function(){
         self.onmessage = function(e){
             postMessage('worker : ' + e.data);

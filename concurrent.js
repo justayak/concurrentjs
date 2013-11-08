@@ -1,17 +1,24 @@
 window.Thread = function(){
 
+    var isPossible = true;
     if (typeof window.Worker === 'undefined'){
-        throw "[concurrent.js] Webworkers are not available but required!";
+        //throw "[concurrent.js] Webworkers are not available but required!";
+        console.error("[concurrent.js] Webworkers are not available but required!");
+        isPossible = false;
     }
 
     window.URL = window.URL || window.webkitURL;
 
     if (typeof window.Blob === 'undefined'){
-        throw "[concurrent.js] Blob required!";
+        //throw "[concurrent.js] Blob required!";
+        console.error("[concurrent.js] Blob required!");
+        isPossible = false;
     }
 
     if (typeof window.URL === 'undefined'){
-        throw "[concurrent.js] URL required!";
+        //throw "[concurrent.js] URL required!";
+        console.error("[concurrent.js] URL required!");
+        isPossible = false;
     }
 
     function Thread(threadFunction){
@@ -49,6 +56,8 @@ window.Thread = function(){
         };
         this.worker = worker;
     };
+
+    Thread.available = isPossible;
 
     Thread.prototype.onmessage = function(callback){
         this.onmessages.push(callback);
