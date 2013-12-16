@@ -23,38 +23,49 @@ window.Thread = function(){
 
     function Thread(threadFunction){
         if (typeof threadFunction !== 'function') throw "[concurrent.js] threadFunction must be a function!";
-        var temp = threadFunction.toString();
-        //remove function parent
-        var start = -1;
-        for (var i = 0; i < temp.length;i++){
-            var c = temp.charAt(i);
-            if (c === '{'){
-                start = i;
-                break;
+        if (isPossible && false){
+            var temp = threadFunction.toString();
+            //remove function parent
+            var start = -1;
+            for (var i = 0; i < temp.length;i++){
+                var c = temp.charAt(i);
+                if (c === '{'){
+                    start = i;
+                    break;
+                }
             }
+            var end = -1;
+            for (var i = temp.length; i > 0; i--){
+                var c = temp.charAt(i);
+                if (c === '}'){
+                    end = i;
+                    break;
+                }
+            }
+
+            temp = temp.substring(start+1, end);
+
+            this.onmessages = [];
+
+            var blob = new Blob([temp]);
+            var worker = new Worker(URL.createObjectURL(blob));
+            var self = this;
+            worker.onmessage = function(e){
+                for(var i = 0; i < self.onmessages.length;i++){
+                    self.onmessages[i].call(self, e);
+                }
+            };
+            this.worker = worker;
+        }else{
+            // this part will be called when we no native threading is available!
+
+
+            setTimeout(function(){
+                threadFunction();
+            },1);
+
         }
-        var end = -1;
-        for (var i = temp.length; i > 0; i--){
-            var c = temp.charAt(i);
-            if (c === '}'){
-                end = i;
-                break;
-            }
-        }
 
-        temp = temp.substring(start+1, end);
-
-        this.onmessages = [];
-
-        var blob = new Blob([temp]);
-        var worker = new Worker(URL.createObjectURL(blob));
-        var self = this;
-        worker.onmessage = function(e){
-            for(var i = 0; i < self.onmessages.length;i++){
-                self.onmessages[i].call(self, e);
-            }
-        };
-        this.worker = worker;
     };
 
     Thread.available = isPossible;
