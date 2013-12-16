@@ -21,6 +21,8 @@ window.Thread = function () {
         isPossible = false;
     }
 
+    isPossible = false;
+
     function Thread(threadFunction) {
         var functionIsAlreadyString = (typeof threadFunction === 'string');
         if (!functionIsAlreadyString && typeof threadFunction !== 'function') throw "[concurrent.js] threadFunction must be a function!";
@@ -93,15 +95,24 @@ window.Thread = function () {
             var code = "self.onmessage=" + onMessage.toString();
             this._innerThread = new Thread(code);
         } else {
-
+            this._onMessage = onMessage;
+            this.onmessages = [];
         }
     };
+
+    if (!isPossible){
+        // this is bad :(
+        window.postMessage = function(e){
+            console.log(e);
+            console.log(this);
+        };
+    }
 
     Simple.prototype.onmessage = function (callback) {
         if (isPossible) {
             this._innerThread.onmessage(callback);
         } else {
-
+            this.onmessages.push(callback);
         }
         return this;
     };
@@ -110,7 +121,11 @@ window.Thread = function () {
         if (isPossible) {
             this._innerThread.postMessage(message);
         } else {
-
+            var self = this;
+            setTimeout(function(){
+                // async call
+                self._onMessage({data:message});
+            },1);
         }
         return this;
     };

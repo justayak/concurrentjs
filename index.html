@@ -9,7 +9,7 @@
 
     console.log(Thread.available);
 
-    var thread = new Thread(function(){
+    /*var thread = new Thread(function(){
         self.onmessage = function(e){
             postMessage('worker : ' + e.data);
         };
@@ -25,7 +25,7 @@
     setTimeout(function(){
         thread.terminate();
     },100);
-
+    */
 
     var simple = new Thread.Simple(function(e){
        postMessage('simple worker: ' + e.data);
