@@ -17,14 +17,28 @@
 
     thread.onmessage(function(m){
         console.log(m.data);
-
-
-        this.postMessage("lol!");
+        //this.postMessage("lol!");
     });
 
     thread.postMessage("hallo welt!");
 
-    //thread.terminate();
+    setTimeout(function(){
+        thread.terminate();
+    },100);
+
+
+    var simple = new Thread.Simple(function(e){
+       postMessage('simple worker: ' + e.data);
+    });
+
+    simple.onmessage(function(m){
+       console.log(m.data);
+    });
+
+    simple.postMessage("hallo welt");
+
+
+
 
 
 </script>
