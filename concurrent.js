@@ -102,9 +102,13 @@ window.Thread = function () {
 
     if (!isPossible){
         // this is bad :(
+        window.__currentCtx = null;
         window.postMessage = function(e){
-            console.log(e);
-            console.log(this);
+            if (__currentCtx === null) throw "[concurrent.js] Thread Error --> undetermined threading target!";
+            for(var i = 0; i < __currentCtx.onmessages.length;i++){
+                __currentCtx.onmessages[i].call(__currentCtx, {data:e});
+            }
+            __currentCtx = null;
         };
     }
 
@@ -124,7 +128,8 @@ window.Thread = function () {
             var self = this;
             setTimeout(function(){
                 // async call
-                self._onMessage({data:message});
+                __currentCtx = self;
+                self._onMessage.call(self, {data:message});
             },1);
         }
         return this;

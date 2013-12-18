@@ -28,11 +28,13 @@
     */
 
     var simple = new Thread.Simple(function(e){
-       postMessage('simple worker: ' + e.data);
+        var x = this;
+        postMessage('simple worker: ' + e.data );
     });
 
     simple.onmessage(function(m){
-       console.log(m.data);
+        console.log("from front again");
+        console.log(m.data);
     });
 
     simple.postMessage("hallo welt");
