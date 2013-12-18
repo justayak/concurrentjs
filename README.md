@@ -1,7 +1,8 @@
 Simple Threading-Class for HTML5/Javascript.
 
 * Attention! The Browser needs to support Blob and URL: http://caniuse.com/bloburls
-* Currently only works on browser-side!
+* Only works on browser-side
+* For better backward compatibility you should consider using Thread.Simple instead of Thread (see down below)
 
 ```javascript
 // create a new Thread
