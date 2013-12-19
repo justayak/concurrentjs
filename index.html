@@ -3,8 +3,8 @@
 <head>
     <title>Threads</title>
 </head>
-<!--script src="concurrent.js"></script-->
-<script src="concurrent_minified.js"></script>
+<script src="concurrent.js"></script>
+<!--script src="concurrent_minified.js"></script-->
 <script>
 
     var simple = new Thread.Simple(function(e){
@@ -34,11 +34,19 @@
 
     Thread.join([simple,simple2, simple3],function(results){
        console.log(results);
+
+        simple.onmessage(function(e){
+           console.log(e.data);
+        });
+
+        simple.postMessage("hallo welt");
+
     });
 
     simple2.postMessage("hallo welt 2");
     simple.postMessage("hallo welt");
     simple3.postMessage("hallo welt 3");
+
 
 
 

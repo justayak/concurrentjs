@@ -24,7 +24,7 @@ window.Thread = function () {
     function Thread(threadFunction) {
         var functionIsAlreadyString = (typeof threadFunction === 'string');
         if (!functionIsAlreadyString && typeof threadFunction !== 'function') throw "[concurrent.js] threadFunction must be a function!";
-        this.onmessages = [];
+        this.onmessages = null;
         if (isPossible) {
             if (functionIsAlreadyString) {
                 var temp = threadFunction;
@@ -54,9 +54,10 @@ window.Thread = function () {
             var worker = new Worker(URL.createObjectURL(blob));
             var self = this;
             worker.onmessage = function (e) {
-                for (var i = 0; i < self.onmessages.length; i++) {
+                /*for (var i = 0; i < self.onmessages.length; i++) {
                     self.onmessages[i].call(self, e);
-                }
+                }*/
+                if (self.onmessages !== null)self.onmessages.call(self, e);
             };
             this.worker = worker;
         } else {
@@ -67,7 +68,8 @@ window.Thread = function () {
     Thread.available = isPossible;
 
     Thread.prototype.onmessage = function (callback) {
-        this.onmessages.push(callback);
+        //this.onmessages.push(callback);
+        this.onmessages = callback;
         return this;
     };
 
@@ -83,6 +85,7 @@ window.Thread = function () {
 
     function buildJoin(thread, i, results, callback){
         thread.onmessage(function(e){
+            thread.onmessages = null; // cleanup listener
             results[i] = e;
             callback();
         });
@@ -116,7 +119,7 @@ window.Thread = function () {
             this._innerThread = new Thread(code);
         } else {
             this._onMessage = onMessage;
-            this.onmessages = [];
+            this.onmessages = null;
         }
     };
 
@@ -125,9 +128,10 @@ window.Thread = function () {
         window.__currentCtx = null;
         window.postMessage = function(e){
             if (__currentCtx === null) throw "[concurrent.js] Thread Error --> undetermined threading target!";
-            for(var i = 0; i < __currentCtx.onmessages.length;i++){
+            /*for(var i = 0; i < __currentCtx.onmessages.length;i++){
                 __currentCtx.onmessages[i].call(__currentCtx, {data:e});
-            }
+            }*/
+            if (self.onmessages !== null)__currentCtx.onmessages.call(__currentCtx,{data:e});
             __currentCtx = null;
         };
     }
@@ -136,7 +140,8 @@ window.Thread = function () {
         if (isPossible) {
             this._innerThread.onmessage(callback);
         } else {
-            this.onmessages.push(callback);
+            //this.onmessages.push(callback);
+            this.onmessages = callback;
         }
         return this;
     };
