@@ -8,17 +8,14 @@
 <script>
 
     var simple = new Thread.Simple(function(e){
-        var x = this;
         postMessage('simple worker: ' + e.data );
     });
 
     var simple2 = new Thread.Simple(function(e){
-        var x = this;
         postMessage('simple worker2: ' + e.data );
     });
 
     var simple3 = new Thread.Simple(function(e){
-        var x = this;
         postMessage('simple worker3: ' + e.data );
     });
 

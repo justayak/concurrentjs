@@ -58,3 +58,27 @@ simple.onmessage(function(m){
 simple.postMessage("hello world");
 
 ```
+
+If you want you can join multiple threads:
+```javascript
+var simple = new Thread.Simple(function(e){
+    postMessage('simple worker: ' + e.data );
+});
+
+var simple2 = new Thread.Simple(function(e){
+    postMessage('simple worker2: ' + e.data );
+});
+
+var simple3 = new Thread.Simple(function(e){
+    postMessage('simple worker3: ' + e.data );
+});
+
+// the callback gets called when all threads replied. The variable results is an array of the result outputs in same order as the threads in the input array
+Thread.join([simple,simple2, simple3],function(results){
+    console.log(results); //
+});
+
+simple2.postMessage("hallo welt 2");
+simple.postMessage("hallo welt");
+simple3.postMessage("hallo welt 3");
+```
