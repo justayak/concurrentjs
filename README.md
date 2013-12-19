@@ -73,7 +73,8 @@ var simple3 = new Thread.Simple(function(e){
     postMessage('simple worker3: ' + e.data );
 });
 
-// the callback gets called when all threads replied. The variable results is an array of the result outputs in same order as the threads in the input array
+// the callback gets called when all threads replied. The variable results is an array
+// of the result outputs in same order as the threads in the input array
 Thread.join([simple,simple2, simple3],function(results){
     console.log(results); //
 });
