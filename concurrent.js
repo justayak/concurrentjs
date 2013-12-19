@@ -21,8 +21,6 @@ window.Thread = function () {
         isPossible = false;
     }
 
-    isPossible = false;
-
     function Thread(threadFunction) {
         var functionIsAlreadyString = (typeof threadFunction === 'string');
         if (!functionIsAlreadyString && typeof threadFunction !== 'function') throw "[concurrent.js] threadFunction must be a function!";
@@ -64,7 +62,6 @@ window.Thread = function () {
         } else {
             throw "[concurrent.js] Real multithreading is not available. Cannot create Thread. Try 'new Thread.Simple(..)'";
         }
-
     };
 
     Thread.available = isPossible;
@@ -82,6 +79,29 @@ window.Thread = function () {
     Thread.prototype.terminate = function () {
         Worker.prototype.terminate.call(this.worker);
         return this;
+    };
+
+    function buildJoin(thread, i, results, callback){
+        thread.onmessage(function(e){
+            results[i] = e;
+            callback();
+        });
+    };
+
+    Thread.join = function(threads, callback){
+        if (typeof callback != 'function') throw "[concurrent.js] 2. Parameter must be a function";
+        if (! (threads instanceof Array)) throw  "[concurrent.js] 1. Parameter must be an Array of Threads";
+
+        var results = new Array(threads.length);
+        var counter = threads.length ;
+        for (var i = 0; i < threads.length; i++){
+            buildJoin(threads[i], i, results, function(){
+                counter -= 1;
+                if (counter == 0){
+                    callback(results);
+                }
+            });
+        }
     };
 
     // === SIMPLE THREAD ===

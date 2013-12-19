@@ -3,43 +3,45 @@
 <head>
     <title>Threads</title>
 </head>
-<script src="concurrent.js"></script>
-<!--script src="concurrent_minified.js"></script-->
+<!--script src="concurrent.js"></script-->
+<script src="concurrent_minified.js"></script>
 <script>
-
-    console.log(Thread.available);
-
-    /*var thread = new Thread(function(){
-        self.onmessage = function(e){
-            postMessage('worker : ' + e.data);
-        };
-    });
-
-    thread.onmessage(function(m){
-        console.log(m.data);
-        //this.postMessage("lol!");
-    });
-
-    thread.postMessage("hallo welt!");
-
-    setTimeout(function(){
-        thread.terminate();
-    },100);
-    */
 
     var simple = new Thread.Simple(function(e){
         var x = this;
         postMessage('simple worker: ' + e.data );
     });
 
-    simple.onmessage(function(m){
-        console.log("from front again");
-        console.log(m.data);
+    var simple2 = new Thread.Simple(function(e){
+        var x = this;
+        postMessage('simple worker2: ' + e.data );
     });
 
+    var simple3 = new Thread.Simple(function(e){
+        var x = this;
+        postMessage('simple worker3: ' + e.data );
+    });
+
+    /*simple.onmessage(function(m){
+        console.log("-> 1 " + m.data);
+    });
+
+    simple2.onmessage(function(m){
+       console.log("-> 2 " + m.data);
+    });
+
+    simple3.onmessage(function(m){
+        console.log("-> 3 " + m.data);
+    });*/
+
+
+    Thread.join([simple,simple2, simple3],function(results){
+       console.log(results);
+    });
+
+    simple2.postMessage("hallo welt 2");
     simple.postMessage("hallo welt");
-
-
+    simple3.postMessage("hallo welt 3");
 
 
 
