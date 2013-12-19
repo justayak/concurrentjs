@@ -3,55 +3,42 @@
 <head>
     <title>Threads</title>
 </head>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 <script src="concurrent.js"></script>
 <!--script src="concurrent_minified.js"></script-->
 <script>
 
-    var simple = new Thread.Simple(function(e){
-        postMessage('simple worker: ' + e.data );
-    });
+    $(function(){
 
-    var simple2 = new Thread.Simple(function(e){
-        postMessage('simple worker2: ' + e.data );
-    });
+        $('#type').html(Thread.available);
 
-    var simple3 = new Thread.Simple(function(e){
-        postMessage('simple worker3: ' + e.data );
-    });
-
-    /*simple.onmessage(function(m){
-        console.log("-> 1 " + m.data);
-    });
-
-    simple2.onmessage(function(m){
-       console.log("-> 2 " + m.data);
-    });
-
-    simple3.onmessage(function(m){
-        console.log("-> 3 " + m.data);
-    });*/
-
-
-    Thread.join([simple,simple2, simple3],function(results){
-       console.log(results);
+        var now = Date.now();
+        var simple = new Thread.Simple(function(e){
+            postMessage('simple worker: ' + e.data );
+        });
+        var after = Date.now();
+        $('#time').html((after - now) + "ms");
 
         simple.onmessage(function(e){
-           console.log(e.data);
+
+            $('#hello').html(e.data);
+
         });
+
 
         simple.postMessage("hallo welt");
 
     });
 
-    simple2.postMessage("hallo welt 2");
-    simple.postMessage("hallo welt");
-    simple3.postMessage("hallo welt 3");
+
 
 
 
 
 </script>
 <body>
-
+<span id="type"></span>
+<div id="hello"></div>
+<span id="time"></span>
 </body>
 </html>

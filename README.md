@@ -83,3 +83,32 @@ simple2.postMessage("hallo welt 2");
 simple.postMessage("hallo welt");
 simple3.postMessage("hallo welt 3");
 ```
+
+#Performance
+Without question creating a Thread and calling its methods comes with costs.
+To give an idea consider following very basic code:
+```javascript
+var simple = new Thread.Simple(function(e){
+    postMessage('simple worker: ' + e.data );
+});
+
+simple.onmessage(function(e){
+    var after = Date.now();
+    var diff = after - now; // actual difference
+});
+
+var now = Date.now();
+simple.postMessage("hallo welt");
+```
+diff is the actual time in milliseconds that passed to get to that position:
+* Windows 7 x64 - Intel Core 2 Duo E8500 @3.16GHz + 8GB RAM // Firefox Nightly (29.0a1 (2013-12-19)) ==> 16ms - 48ms | ~ 36ms
+* iOS 7.0.4 - iPad Mini // Safari ==> 26ms - 98ms | ~ 53ms
+* Android 4.1.2 - Samsung Galaxy S3 ==> 81ms - 114ms | ~ 110ms
+
+For a real-world-problem you need to add costs for passing the parameters to the thread too (JSON.stringify and JSON.parse).
+
+The instantiation of a Thread depends on the size (literally size, not complexity) of its given function. In the simple example the creation of the Thread takes.
+* Windows 7 x64 - Intel Core 2 Duo E8500 @3.16GHz + 8GB RAM // Firefox Nightly (29.0a1 (2013-12-19)) ==> 0ms - 1ms | ~ 1ms
+* iOS 7.0.4 - iPad Mini // Safari ==> 1ms - 5ms | ~ 1ms
+* Android 4.1.2 - Samsung Galaxy S3 ==> 2ms - 9ms | ~ 5ms
+time

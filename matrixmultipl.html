@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<script src="concurrent_minified.js"></script>
+<script>
+
+    function createMatrix(w,h){
+        var m = [];
+        for(var i = 0; i < w; i++){
+            var row = [];
+            for(var j = 0; j < h; j++){
+                row[j] = Math.floor(Math.random()*11);
+            }
+            m[i] = row;
+        }
+        return m;
+    }
+
+    var A = createMatrix(5,3);
+    var B = createMatrix(3,5);
+
+    function multiply(A,B){
+        var result = [];
+        for (var i = 0; i < A.length;i++){
+            for(var y = 0; y < A[0].length; j++){
+
+            }
+        }
+    }
+
+    console.log(A);
+    console.log(B);
+
+</script>
+<body>
+
+</body>
+</html>
