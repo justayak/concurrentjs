@@ -96,7 +96,7 @@ window.Thread = function () {
         if (! (threads instanceof Array)) throw  "[concurrent.js] 1. Parameter must be an Array of Threads";
 
         var results = new Array(threads.length);
-        var counter = threads.length ;
+        var counter = threads.length;
         for (var i = 0; i < threads.length; i++){
             buildJoin(threads[i], i, results, function(){
                 counter -= 1;
