@@ -1,6 +1,34 @@
 # Concurrentjs
 
+## use
 
+```javascript
+
+if (Concurrent.hasMultithreading) {
+    // when multithreading is available
+}
+
+var thread = new Concurrent.Thread(function(){
+    onmessage = function(e) {
+        var data = e.data;
+        // .. do stuff..
+        postMessage(data);
+    }
+});
+
+thread.onmessage(function(data) {
+    // do stuff with data
+});
+
+thread.onerror(function(error){
+    // do stuff ..
+});
+
+thread.terminate();
+
+thread.close();
+
+```
 
 ## performance
 
