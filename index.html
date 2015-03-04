@@ -3,8 +3,79 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="build/concurrentjs.bundle.debug.js"></script>
 </head>
 <body>
+    <div id="has">
 
+    </div>
+    <div id="avg">
+
+    </div>
+    <div id="debug">
+
+    </div>
 </body>
+<script>
+
+    var start = 0;
+    var end = 0;
+    var total = [];
+
+    $(function () {
+
+        var binary = new Uint8Array(1000000);
+
+        if (Concurrent.hasMultithreading) {
+            $('#has').html("yes");
+        } else {
+            $('#has').html("no");
+        }
+
+        var thread = new Concurrent.Thread(function () {
+
+            onmessage = function (message) {
+                //alert('hi');
+                var data = message.data;
+                data[0] = 1;
+                data[2] = 2;
+                data[122] = 3;
+                postMessage(data);
+            };
+
+        });
+
+        thread.onmessage(function (data) {
+
+        });
+
+        thread.onerror(function (e) {
+            alert(e);
+        });
+
+        setInterval(function () {
+
+            start = Date.now();
+            thread.postMessage(binary);
+            endit();
+        }, 1000);
+
+    });
+
+    function endit() {
+        end = Date.now();
+        total.push(end - start);
+        var gesamt = 0;
+        total.forEach(function (e) {
+            gesamt += e;
+        });
+        var avg = gesamt / total.length;
+        $('#avg').html(avg);
+    }
+
+    function log(str) {
+        $('#debug').html(str);
+    }
+</script>
 </html>

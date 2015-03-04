@@ -4,7 +4,9 @@
   "description": "Simple concurrency helper",
   "main": "lib/main.js",
   "scripts": {
-    "test": "jasmine-node spec"
+    "test": "jasmine-node spec",
+      "debug": "browserify lib/main.js --debug --s Concurrent > build/concurrentjs.bundle.debug.js",
+      "build": "browserify lib/main.js --s Concurrent | uglifyjs > build/concurrentjs.bundle.js"
   },
   "repository": {
     "type": "git",
