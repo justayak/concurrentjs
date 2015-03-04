@@ -1,0 +1,23 @@
+{
+  "name": "concurrentjs",
+  "version": "0.0.1",
+  "description": "Simple concurrency helper",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "jasmine-node spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justayak/concurrentjs.git"
+  },
+  "keywords": [
+    "worker",
+    "multithreading"
+  ],
+  "author": "Julian Tanke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justayak/concurrentjs/issues"
+  },
+  "homepage": "https://github.com/justayak/concurrentjs"
+}

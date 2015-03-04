@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threads</title>
+</head>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="concurrent.js"></script>
+<!--script src="concurrent_minified.js"></script-->
+<script>
+
+    $(function(){
+
+        $('#type').html(Thread.available);
+
+        var now = Date.now();
+        var simple = new Thread.Simple(function(e){
+            postMessage('simple worker: ' + e.data );
+        });
+        var after = Date.now();
+        $('#time').html((after - now) + "ms");
+
+        simple.onmessage(function(e){
+
+            $('#hello').html(e.data);
+
+        });
+
+
+        simple.postMessage("hallo welt");
+
+    });
+
+
+
+
+
+
+</script>
+<body>
+<span id="type"></span>
+<div id="hello"></div>
+<span id="time"></span>
+</body>
+</html>
